@@ -1,0 +1,22 @@
+{
+  "name": "genshinapi",
+  "version": "1.0.0",
+  "description": "Descripción del proyecto",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "laravel-vite-plugin": "^0.7.0",
+    "sass": "^1.80.4",
+    "vite": "^4.0.0"
+  },
+  "dependencies": {
+    "axios": "^1.7.7",
+    "bootstrap": "^5.3.3"
+  }
+}
