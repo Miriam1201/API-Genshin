@@ -26,7 +26,8 @@ class Character extends Model
         'release',
         'constellation',
         'birthday',
-        'description'
+        'description',
+        'imagen'
     ];
 
     public function skillTalents()
