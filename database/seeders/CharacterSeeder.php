@@ -15,7 +15,7 @@ class CharacterSeeder extends Seeder
     {
         $baseJsonPath = storage_path('app/public/data/characters');
         $baseImagePath = storage_path('app/public/images/characters');
-        $baseUrl = 'http://10.0.2.2:8000/storage/';
+        $baseUrl = 'http://192.168.100.30:8000/';
 
         $characterDirs = File::directories($baseJsonPath);
 
@@ -52,11 +52,12 @@ class CharacterSeeder extends Seeder
                             $filename = $file->getFilename();
 
                             // Asegurarse de que las rutas usan barras normales
-                            $fileUrl = $baseUrl . 'images/characters/' . $characterId . '/' . str_replace('\\', '/', $filename);
+                            $fileUrl = $baseUrl . 'storage/images/characters/' . $characterId . '/' . str_replace('\\', '/', $filename);
 
-                            if (str_contains($filename, 'card')) {
+                            // Seleccionar la imagen correspondiente según el nombre
+                            if ($filename === 'card.png') {
                                 $cardImage = $fileUrl;
-                            } elseif (str_contains($filename, 'icon-big')) {
+                            } elseif ($filename === 'icon-big.png') {
                                 $iconBigImage = $fileUrl;
                             }
                         }
@@ -81,8 +82,6 @@ class CharacterSeeder extends Seeder
                         'icon_big' => $iconBigImage,
                     ]);
 
-
-                    
                     foreach ($characterData['skillTalents'] as $skillTalent) {
                         $skillTalentId = DB::table('skill_talents')->insertGetId([
                             'character_id' => $characterId,
