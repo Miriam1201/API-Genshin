@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -16,7 +15,7 @@ class CharacterSeeder extends Seeder
     {
         $baseJsonPath = storage_path('app/public/data/characters');
         $baseImagePath = storage_path('app/public/images/characters');
-        $baseUrl = config('app.url') . '/storage/';
+        $baseUrl = 'http://10.0.2.2:8000/storage/';
 
         $characterDirs = File::directories($baseJsonPath);
 
@@ -41,33 +40,26 @@ class CharacterSeeder extends Seeder
                         $birthday = '1980-02-28';
                     }
 
-                    // Buscar carpeta de imágenes
-                    $imageDir = $baseImagePath . DIRECTORY_SEPARATOR . $characterId;
-                    $images = null;
+                    // Buscar imágenes específicas
+                    $cardImage = null;
+                    $iconBigImage = null;
 
+                    $imageDir = $baseImagePath . DIRECTORY_SEPARATOR . $characterId;
                     if (File::exists($imageDir)) {
                         $imageFiles = File::files($imageDir);
-                        // Renombrar los archivos y construir URLs completas
-                        $images = collect($imageFiles)->map(function ($file) use ($characterId, $baseUrl) {
-                        $originalFilename = $file->getFilename(); // Nombre original
-                    
-                        // Verificar si ya tiene la extensión .png
-                        if (!str_ends_with($originalFilename, '.png')) {
-                            $newFilename = $originalFilename . '.png'; // Añadir la extensión .png
-                    
-                            // Renombrar físicamente el archivo si aún no tiene la extensión
-                            $newPath = $file->getPath() . DIRECTORY_SEPARATOR . $newFilename;
-                            if (!File::exists($newPath)) {
-                                File::move($file->getPathname(), $newPath);
+
+                        foreach ($imageFiles as $file) {
+                            $filename = $file->getFilename();
+
+                            // Asegurarse de que las rutas usan barras normales
+                            $fileUrl = $baseUrl . 'images/characters/' . $characterId . '/' . str_replace('\\', '/', $filename);
+
+                            if (str_contains($filename, 'card')) {
+                                $cardImage = $fileUrl;
+                            } elseif (str_contains($filename, 'icon-big')) {
+                                $iconBigImage = $fileUrl;
                             }
-                    
-                            // Devolver la URL completa con el nuevo nombre
-                            return $baseUrl . 'images/characters/' . $characterId . '/' . $newFilename;
                         }
-                    
-                        // Devolver la URL completa con el nombre original si ya tiene .png
-                        return $baseUrl . 'images/characters/' . $characterId . '/' . $originalFilename;
-                        })->toArray();
                     }
 
                     // Insertar los datos del personaje en la base de datos
@@ -85,10 +77,72 @@ class CharacterSeeder extends Seeder
                         'constellation' => $characterData['constellation'] ?? null,
                         'birthday' => $birthday,
                         'description' => $characterData['description'] ?? null,
-                        'images' => $images ? json_encode($images) : null, // Guardar imágenes como JSON
+                        'card' => $cardImage,
+                        'icon_big' => $iconBigImage,
                     ]);
 
-                    // Inserta otros datos relacionados (habilidades, talentos, etc.)
+
+                    
+                    foreach ($characterData['skillTalents'] as $skillTalent) {
+                        $skillTalentId = DB::table('skill_talents')->insertGetId([
+                            'character_id' => $characterId,
+                            'name' => $skillTalent['name'],
+                            'unlock' => $skillTalent['unlock'] ?? null,
+                            'description' => $skillTalent['description'] ?? null,
+                            'type' => $skillTalent['type'] ?? null,
+                        ]);
+
+                        // Inserta las mejoras de skill talents
+                        if (isset($skillTalent['upgrades'])) {
+                            foreach ($skillTalent['upgrades'] as $upgrade) {
+                                DB::table('skill_upgrades')->insert([
+                                    'skill_talent_id' => $skillTalentId,
+                                    'name' => $upgrade['name'],
+                                    'value' => $upgrade['value'],
+                                ]);
+                            }
+                        }
+                    }
+
+                    // Inserta los passive talents
+                    if (isset($characterData['passiveTalents'])) {
+                        foreach ($characterData['passiveTalents'] as $passiveTalent) {
+                            DB::table('passive_talents')->insert([
+                                'character_id' => $characterId,
+                                'name' => $passiveTalent['name'],
+                                'unlock' => $passiveTalent['unlock'] ?? null,
+                                'description' => $passiveTalent['description'] ?? null,
+                                'level' => $passiveTalent['level'] ?? null,
+                            ]);
+                        }
+                    }
+
+                    // Inserta las constellations
+                    if (isset($characterData['constellations'])) {
+                        foreach ($characterData['constellations'] as $constellation) {
+                            DB::table('constellations')->insert([
+                                'character_id' => $characterId,
+                                'name' => $constellation['name'],
+                                'unlock' => $constellation['unlock'] ?? null,
+                                'description' => $constellation['description'] ?? null,
+                                'level' => $constellation['level'] ?? null,
+                            ]);
+                        }
+                    }
+
+                    // Inserta los ascension materials
+                    if (isset($characterData['ascension_materials'])) {
+                        foreach ($characterData['ascension_materials'] as $level => $materials) {
+                            foreach ($materials as $material) {
+                                DB::table('ascension_materials')->insert([
+                                    'character_id' => $characterId,
+                                    'level' => $level,
+                                    'material_name' => $material['name'],
+                                    'value' => $material['value'],
+                                ]);
+                            }
+                        }
+                    }
                 }
             }
         }
