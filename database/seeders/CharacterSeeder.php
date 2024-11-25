@@ -15,7 +15,6 @@ class CharacterSeeder extends Seeder
     {
         $baseJsonPath = storage_path('app/public/data/characters');
         $baseImagePath = storage_path('app/public/images/characters');
-        $baseUrl = 'http://192.168.100.30:8000/';
 
         $characterDirs = File::directories($baseJsonPath);
 
@@ -52,13 +51,13 @@ class CharacterSeeder extends Seeder
                             $filename = $file->getFilename();
 
                             // Asegurarse de que las rutas usan barras normales
-                            $fileUrl = $baseUrl . 'storage/images/characters/' . $characterId . '/' . str_replace('\\', '/', $filename);
+                            $filePath = '/storage/images/characters/' . $characterId . '/' . str_replace('\\', '/', $filename);
 
                             // Seleccionar la imagen correspondiente según el nombre
                             if ($filename === 'card.png') {
-                                $cardImage = $fileUrl;
+                                $cardImage = $filePath;
                             } elseif ($filename === 'icon-big.png') {
-                                $iconBigImage = $fileUrl;
+                                $iconBigImage = $filePath;
                             }
                         }
                     }
