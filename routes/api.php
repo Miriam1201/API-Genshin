@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\API\CharacterController;
+use App\Http\Controllers\API\ArtifactController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,3 +23,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('/characters', [CharacterController::class, 'index']);
 Route::get('/characters/{id}', [CharacterController::class, 'show']);
+
+Route::prefix('artifacts')->group(function () {
+    Route::get('/', [ArtifactController::class, 'index']); // Todos los artefactos
+    Route::get('/{id}', [ArtifactController::class, 'show']); // Artefacto específico
+    Route::get('/paginate', [ArtifactController::class, 'paginate']); // Paginación
+});
