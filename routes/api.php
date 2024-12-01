@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\API\CharacterController;
+use App\Http\Controllers\API\WeaponController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -22,3 +24,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('/characters', [CharacterController::class, 'index']);
 Route::get('/characters/{id}', [CharacterController::class, 'show']);
+
+Route::get('/weapons', [WeaponController::class, 'index']);
+Route::get('/weapons/{id}', [WeaponController::class, 'show']);
