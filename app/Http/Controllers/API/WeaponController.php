@@ -11,9 +11,10 @@ class WeaponController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $weapons = Weapon::all();
+        $perPage = $request->input('per_page', 10);
+        $weapons = Weapon::paginate($perPage);
         return response()->json($weapons);
     }
 
