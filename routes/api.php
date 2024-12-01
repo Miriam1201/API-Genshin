@@ -21,11 +21,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/characters', [CharacterController::class, 'index']);
 Route::get('/characters/{id}', [CharacterController::class, 'show']);
+Route::get('/characters', [CharacterController::class, 'index']);
 
 Route::prefix('artifacts')->group(function () {
+    Route::get('/paginate', [ArtifactController::class, 'paginate']); // Paginación (debe ir antes)
     Route::get('/', [ArtifactController::class, 'index']); // Todos los artefactos
     Route::get('/{id}', [ArtifactController::class, 'show']); // Artefacto específico
-    Route::get('/paginate', [ArtifactController::class, 'paginate']); // Paginación
 });
