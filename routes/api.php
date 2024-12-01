@@ -21,8 +21,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/characters/{id}', [CharacterController::class, 'show']);
-Route::get('/characters', [CharacterController::class, 'index']);
+
+Route::prefix('characters')->group(function () {
+    Route::get('/paginate', [CharacterController::class, 'paginate']); // Paginación
+    Route::get('/', [CharacterController::class, 'index']); // Todos los personajes
+    Route::get('/{id}', [CharacterController::class, 'show']); // Un personaje específico
+});
+
 
 Route::prefix('artifacts')->group(function () {
     Route::get('/paginate', [ArtifactController::class, 'paginate']); // Paginación (debe ir antes)

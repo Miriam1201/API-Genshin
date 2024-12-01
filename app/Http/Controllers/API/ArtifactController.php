@@ -45,7 +45,17 @@ class ArtifactController extends Controller
     public function paginate(Request $request)
     {
         $perPage = $request->query('per_page', 10); // Default: 10 items per page
-        $artifacts = Artifact::paginate($perPage);
+        $search = $request->query('search', ''); // Texto de búsqueda
+
+        $query = Artifact::query();
+
+        // Si hay un término de búsqueda, filtra por nombre
+        if ($search) {
+            $query->where('name', 'like', "%{$search}%");
+        }
+
+        $artifacts = $query->paginate($perPage);
+
         return response()->json($artifacts, 200);
     }
 }
