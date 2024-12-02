@@ -26,4 +26,10 @@ class Artifact extends Model
         }
         return null;
     }
+
+    // Forzar que el id siempre sea string
+    public function getIdAttribute($value)
+    {
+        return (string) $value;
+    }
 }
