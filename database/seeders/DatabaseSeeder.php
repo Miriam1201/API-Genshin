@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
             MaterialSeeder::class,
             NationSeeder::class,
             WeaponSeeder::class,
+            CharacterArtifactSeeder::class
         ]);
     }
 }

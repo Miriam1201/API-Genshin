@@ -15,7 +15,7 @@ class CharacterController extends Controller
      */
     public function index()
     {
-        $characters = Character::all();
+        $characters = Character::with('artifacts')->get();
         return response()->json($characters);
     }
 
@@ -27,7 +27,7 @@ class CharacterController extends Controller
      */
     public function show(string $id)
     {
-        $character = Character::find($id);
+        $character = Character::with('artifacts')->find($id);
 
         if (!$character) {
             return response()->json(['message' => 'Character not found'], 404);
@@ -46,15 +46,15 @@ class CharacterController extends Controller
     {
         $perPage = $request->query('per_page', 10);
         $search = $request->query('search', '');
-    
+
         $query = Character::query();
-    
+
         if ($search) {
             $query->where('name', 'like', "%{$search}%");
         }
-    
-        $characters = $query->paginate($perPage);
-    
+
+        $characters = $query->with('artifacts')->paginate($perPage);
+
         return response()->json($characters, 200);
     }
 }
