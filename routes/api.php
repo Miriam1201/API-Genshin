@@ -23,8 +23,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::get('/weapons', [WeaponController::class, 'index']);
-Route::get('/weapons/{id}', [WeaponController::class, 'show']);
+Route::prefix('weapons')->group(function () {
+    Route::get('/paginate', [CharacterController::class, 'paginate']); // Paginación
+    Route::get('/', [CharacterController::class, 'index']); // Todas las armas
+    Route::get('/{id}', [CharacterController::class, 'show']); // Un arma específico
+});
 
 Route::prefix('characters')->group(function () {
     Route::get('/paginate', [CharacterController::class, 'paginate']); // Paginación
@@ -32,9 +35,8 @@ Route::prefix('characters')->group(function () {
     Route::get('/{id}', [CharacterController::class, 'show']); // Un personaje específico
 });
 
-
 Route::prefix('artifacts')->group(function () {
-    Route::get('/paginate', [ArtifactController::class, 'paginate']); // Paginación (debe ir antes)
+    Route::get('/paginate', [ArtifactController::class, 'paginate']); // Paginación
     Route::get('/', [ArtifactController::class, 'index']); // Todos los artefactos
     Route::get('/{id}', [ArtifactController::class, 'show']); // Artefacto específico
 });

@@ -9,25 +9,21 @@ use App\Models\Weapon;
 class WeaponController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Muestra todas las armas.
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function index(Request $request)
+    public function index()
     {
-        $perPage = $request->input('per_page', 10);
-        $weapons = Weapon::paginate($perPage);
+        $weapons = Weapon::all();
         return response()->json($weapons);
     }
 
     /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
+     * Muestra una arma específica.
+     *
+     * @param  string  $id
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show(string $id)
     {
@@ -41,18 +37,24 @@ class WeaponController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Muestra una lista de armas paginada.
+     *
+     * @param  Request  $request
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, string $id)
+    public function paginate(Request $request)
     {
-        //
-    }
+        $perPage = $request->query('per_page', 10);
+        $search = $request->query('search', '');
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $query = Weapon::query();
+
+        if ($search) {
+            $query->where('name', 'type', "%{$search}%");
+        }
+
+        $weapons = $query->paginate($perPage);
+
+        return response()->json($weapons, 200);
     }
 }
