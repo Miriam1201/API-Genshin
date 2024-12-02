@@ -24,8 +24,6 @@ class DatabaseSeeder extends Seeder
             ArtifactSeeder::class,
             BossSeeder::class,
             CharacterSeeder::class,
-            ConsumableSeeder::class,
-            PotionSeeder::class,
             DomainSeeder::class,
             ElementSeeder::class,
             EnemySeeder::class,
