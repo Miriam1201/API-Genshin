@@ -57,6 +57,10 @@ class CharacterResource extends Resource
                     ->label('Birthday'),
                 Forms\Components\Textarea::make('description')
                     ->label('Description'),
+                Forms\Components\Select::make('artifacts')
+                    ->multiple()
+                    ->relationship('artifacts', 'name')
+                    ->preload(),
             ]);
     }
 
@@ -92,6 +96,11 @@ class CharacterResource extends Resource
                     ->label('Nation')
                     ->sortable()
                     ->searchable(),
+                Tables\Columns\TextColumn::make('artifacts.name')
+                    ->label('Artifacts')
+                    ->limit(3)
+                    ->sortable(),
+
             ])
             ->filters([
                 //

@@ -11,15 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('passive_talents', function (Blueprint $table) {
+        Schema::create('artifact_character', function (Blueprint $table) {
             $table->id();
             $table->string('character_id');
-            $table->string('name');
-            $table->string('unlock')->nullable();
-            $table->text('description')->nullable();
-            $table->integer('level')->nullable();
+            $table->string('artifact_id');
             $table->timestamps();
+
             $table->foreign('character_id')->references('id')->on('characters')->onDelete('cascade');
+            $table->foreign('artifact_id')->references('id')->on('artifacts')->onDelete('cascade');
         });
     }
 
@@ -28,10 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('passive_talents', function (Blueprint $table) {
-            $table->dropForeign(['character_id']);
-        });
-
-        Schema::dropIfExists('passive_talents');
+        Schema::dropIfExists('artifact_character');
     }
 };

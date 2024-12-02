@@ -27,8 +27,8 @@ class Character extends Model
         'constellation',
         'birthday',
         'description',
-        'card',       
-        'icon_big',   
+        'card',
+        'icon_big',
     ];
 
     public function skillTalents()
@@ -44,5 +44,10 @@ class Character extends Model
     public function constellations()
     {
         return $this->hasMany(Constellation::class, 'character_id');
+    }
+
+    public function artifacts()
+    {
+        return $this->belongsToMany(Artifact::class, 'artifact_character');
     }
 }

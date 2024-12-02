@@ -42,6 +42,11 @@ class ArtifactResource extends Resource
 
                 Forms\Components\Textarea::make('4_piece_bonus')
                     ->label('4-Piece Bonus'),
+
+                Forms\Components\Select::make('characters')
+                    ->multiple()
+                    ->relationship('characters', 'name')
+                    ->preload(),
             ]);
     }
 
@@ -66,6 +71,12 @@ class ArtifactResource extends Resource
                 Tables\Columns\TextColumn::make('4_piece_bonus')
                     ->label('4-Piece Bonus')
                     ->limit(50),
+
+                Tables\Columns\TextColumn::make('characters.name')
+                    ->label('Characters')
+                    ->limit(3)
+                    ->sortable(),
+
             ])
             ->filters([])
             ->actions([
