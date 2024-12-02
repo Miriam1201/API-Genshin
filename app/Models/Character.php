@@ -50,4 +50,24 @@ class Character extends Model
     {
         return $this->belongsToMany(Artifact::class, 'artifact_character');
     }
+
+    public function teamsAsMainDps()
+    {
+        return $this->hasMany(Team::class, 'main_dps');
+    }
+
+    public function teamsAsSubDps()
+    {
+        return $this->hasMany(Team::class, 'sub_dps');
+    }
+
+    public function teamsAsSupport()
+    {
+        return $this->hasMany(Team::class, 'support');
+    }
+
+    public function teamsAsHealerShielder()
+    {
+        return $this->hasMany(Team::class, 'healer_shielder');
+    }
 }
