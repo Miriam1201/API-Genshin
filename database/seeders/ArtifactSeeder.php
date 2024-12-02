@@ -5,8 +5,6 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 class ArtifactSeeder extends Seeder
 {
@@ -40,9 +38,22 @@ class ArtifactSeeder extends Seeder
                         if (File::exists($imageDir)) {
                             $imageFiles = File::files($imageDir);
 
-                            // Si hay exactamente un archivo, se asume que es la imagen
+                            // Si hay exactamente un archivo de imagen, ajusta la extensión si es necesario
                             if (count($imageFiles) === 1) {
-                                $imagePath = 'images/artifacts/' . $artifactId . '/' . $imageFiles[0]->getFilename();
+                                $imageFile = $imageFiles[0];
+                                $filename = $imageFile->getFilename();
+
+                                // Asegúrate de que tenga la extensión .png
+                                if (!str_ends_with($filename, '.png')) {
+                                    $filename .= '.png';
+                                    $newPath = $imageFile->getPath() . DIRECTORY_SEPARATOR . $filename;
+
+                                    // Renombra el archivo en el sistema de archivos
+                                    File::move($imageFile->getPathname(), $newPath);
+                                }
+
+                                // Define la ruta relativa que se guardará en la base de datos
+                                $imagePath = '/storage/images/artifacts/' . $artifactId . '/' . $filename;
                             }
                         }
 

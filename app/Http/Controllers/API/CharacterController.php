@@ -4,35 +4,29 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
 use App\Models\Character;
 
 class CharacterController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Muestra todos los personajes.
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        //
         $characters = Character::all();
         return response()->json($characters);
     }
 
     /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
+     * Muestra un personaje específico.
+     *
+     * @param  string  $id
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show(string $id)
     {
-        //
         $character = Character::find($id);
 
         if (!$character) {
@@ -43,18 +37,24 @@ class CharacterController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Muestra una lista de personajes paginada.
+     *
+     * @param  Request  $request
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, string $id)
+    public function paginate(Request $request)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $perPage = $request->query('per_page', 10);
+        $search = $request->query('search', '');
+    
+        $query = Character::query();
+    
+        if ($search) {
+            $query->where('name', 'like', "%{$search}%");
+        }
+    
+        $characters = $query->paginate($perPage);
+    
+        return response()->json($characters, 200);
     }
 }

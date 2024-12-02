@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\API\CharacterController;
 use App\Http\Controllers\API\WeaponController;
-
+use App\Http\Controllers\API\ArtifactController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,8 +22,19 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/characters', [CharacterController::class, 'index']);
-Route::get('/characters/{id}', [CharacterController::class, 'show']);
 
 Route::get('/weapons', [WeaponController::class, 'index']);
 Route::get('/weapons/{id}', [WeaponController::class, 'show']);
+
+Route::prefix('characters')->group(function () {
+    Route::get('/paginate', [CharacterController::class, 'paginate']); // Paginación
+    Route::get('/', [CharacterController::class, 'index']); // Todos los personajes
+    Route::get('/{id}', [CharacterController::class, 'show']); // Un personaje específico
+});
+
+
+Route::prefix('artifacts')->group(function () {
+    Route::get('/paginate', [ArtifactController::class, 'paginate']); // Paginación (debe ir antes)
+    Route::get('/', [ArtifactController::class, 'index']); // Todos los artefactos
+    Route::get('/{id}', [ArtifactController::class, 'show']); // Artefacto específico
+});
