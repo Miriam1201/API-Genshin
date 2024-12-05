@@ -32,4 +32,9 @@ class Artifact extends Model
     {
         return (string) $value;
     }
+
+    public function characters()
+    {
+        return $this->belongsToMany(Character::class, 'artifact_character');
+    }
 }

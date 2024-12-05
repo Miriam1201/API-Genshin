@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Team;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 
@@ -30,6 +32,8 @@ class DatabaseSeeder extends Seeder
             MaterialSeeder::class,
             NationSeeder::class,
             WeaponSeeder::class,
+            CharacterArtifactSeeder::class,
+            TeamSeeder::class
         ]);
     }
 }
