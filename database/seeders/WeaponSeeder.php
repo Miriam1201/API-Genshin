@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 class WeaponSeeder extends Seeder
 {
@@ -15,52 +15,87 @@ class WeaponSeeder extends Seeder
     public function run()
     {
         // Base de directorios de datos y de imágenes
-        $dataPath = base_path('public/storage/data/weapons');
-        $imagePath = base_path('public/storage/images/weapons');
-        $baseUrl = 'http://10.0.2.2:8000/storage/images/weapons/';
+        $dataPath = storage_path('app/public/data/weapons');
+        $imagePath = storage_path('app/public/images/weapons');
+        $baseUrl = '/storage/images/weapons/';
+
+        // Verifica si las carpetas de datos existen
+        if (!File::exists($dataPath)) {
+            $this->command->error("El directorio de datos ($dataPath) no existe.");
+            return;
+        }
 
         // Obtener las carpetas que contienen los JSON de armas
         $folders = File::directories($dataPath);
 
         foreach ($folders as $folder) {
-            $path = $folder . '/en.json';
+            $jsonFilePath = $folder . '/en.json';
 
-            if (File::exists($path)) {
-                $data = json_decode(File::get($path), true);
+            // Verifica si existe el archivo JSON en la carpeta
+            if (File::exists($jsonFilePath)) {
+                $data = json_decode(File::get($jsonFilePath), true);
 
-                // Obtener las imágenes del arma
-                $weaponId = strtolower(str_replace(' ', '-', $data['name']));
+                if (!$data || !is_array($data)) {
+                    $this->command->warn("Datos inválidos en: $jsonFilePath");
+                    continue;
+                }
+
+                // Genera el ID del arma en base al nombre
+                $weaponId = Str::slug($data['name']); // Convierte a un formato slug (id amigable)
                 $imageDir = $imagePath . '/' . $weaponId;
 
                 $imageUrl = null;
 
+                // Busca la imagen correspondiente
                 if (File::exists($imageDir)) {
                     $imageFiles = File::files($imageDir);
                     foreach ($imageFiles as $file) {
                         $filename = $file->getFilename();
-                        if (str_ends_with($filename, '.png')) {
-                            $imageUrl = $baseUrl . $weaponId . '/' . $filename;
-                            break; // Asumimos que sólo necesitamos una imagen por arma
+
+                        // Si el archivo no tiene la extensión .png, se le agrega
+                        if (!Str::endsWith($filename, '.png')) {
+                            $newFilename = $filename . '.png';
+                            $newFilePath = $file->getPath() . '/' . $newFilename;
+
+                            // Renombrar el archivo en el sistema de archivos
+                            File::move($file->getPathname(), $newFilePath);
+
+                            $filename = $newFilename; // Actualiza el nombre del archivo
                         }
+
+                        // Construye la URL de la imagen
+                        $imageUrl = $baseUrl . $weaponId . '/' . $filename;
+                        break; // Utiliza la primera imagen PNG válida
                     }
                 }
 
-                // Utilizar upsert para evitar duplicados
-                DB::table('weapons')->upsert([
+                // Inserta o actualiza la información del arma
+                DB::table('weapons')->upsert(
                     [
-                        'id' => $weaponId,
-                        'name' => $data['name'],
-                        'type' => $data['type'],
-                        'rarity' => $data['rarity'],
-                        'baseAttack' => $data['baseAttack'],
-                        'subStat' => $data['subStat'],
-                        'passiveName' => $data['passiveName'],
-                        'passiveDesc' => $data['passiveDesc'],
-                        'location' => $data['location'],
-                        'ascensionMaterial' => $data['ascensionMaterial'],
-                        'image' => $imageUrl, // Añadir la URL de la imagen
+                        [
+                            'id' => $weaponId,
+                            'name' => $data['name'],
+                            'type' => $data['type'],
+                            'rarity' => $data['rarity'],
+                            'baseAttack' => $data['baseAttack'],
+                            'subStat' => $data['subStat'],
+                            'passiveName' => $data['passiveName'],
+                            'passiveDesc' => $data['passiveDesc'],
+                            'location' => $data['location'],
+                            'ascensionMaterial' => $data['ascensionMaterial'],
+                            'image' => $imageUrl,
+                        ]
+                    ],
+                    ['id'], // Clave única para evitar duplicados
+                    [
+                        'name', 'type', 'rarity', 'baseAttack', 'subStat',
+                        'passiveName', 'passiveDesc', 'location', 'ascensionMaterial', 'image'
                     ]
-                ], ['id'], ['name', 'type', 'rarity', 'baseAttack', 'subStat', 'passiveName', 'passiveDesc', 'location', 'ascensionMaterial', 'image']);
+                );
+
+                $this->command->info("Arma '{$data['name']}' insertada/actualizada correctamente.");
+            } else {
+                $this->command->warn("No se encontró el archivo JSON en: $folder");
             }
         }
     }
