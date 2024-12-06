@@ -35,4 +35,35 @@ class TeamController extends Controller
 
         return response()->json($team);
     }
+
+    /**
+     * Muestra los equipos donde aparece un personaje.
+     *
+     * @param  string  $characterName
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function findByCharacter($characterName)
+    {
+        $teams = Team::with(['mainDps', 'subDps', 'support', 'healerShielder'])
+            ->whereHas('mainDps', function ($query) use ($characterName) {
+                $query->where('id', $characterName);
+            })
+            ->orWhereHas('subDps', function ($query) use ($characterName) {
+                $query->where('id', $characterName);
+            })
+            ->orWhereHas('support', function ($query) use ($characterName) {
+                $query->where('id', $characterName);
+            })
+            ->orWhereHas('healerShielder', function ($query) use ($characterName) {
+                $query->where('id', $characterName);
+            })
+            ->get();
+
+        if ($teams->isEmpty()) {
+            return response()->json(['message' => 'No teams found for the given character'], 404);
+        }
+
+        return response()->json($teams);
+    }
+
 }
