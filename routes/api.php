@@ -44,5 +44,6 @@ Route::prefix('artifacts')->group(function () {
 
 Route::prefix('teams')->group(function () {
     Route::get('/', [TeamController::class, 'index']); // Todos los equipos
+    Route::get('/{characterName}', [TeamController::class, 'findByCharacter']); // Todos los equipos de un personaje
     Route::get('/{id}', [TeamController::class, 'show']); // Un equipo específico
 });
