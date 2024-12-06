@@ -212,10 +212,10 @@ class TeamSeeder extends Seeder
                 'healer_shielder' => 'bennett',
             ],
             [
-                'main_dps' => 'kinich',
-                'sub_dps' => 'xiangling',
-                'support' => 'emilie',
-                'healer_shielder' => 'bennett',
+                'main_dps' => 'nahida',
+                'sub_dps' => 'kuki-shinobu',
+                'support' => 'barbara',
+                'healer_shielder' => 'zhongli',
             ],
             [
                 'main_dps' => 'nilou',
@@ -245,12 +245,6 @@ class TeamSeeder extends Seeder
                 'main_dps' => 'lyney',
                 'sub_dps' => 'xiangling',
                 'support' => 'kazuha',
-                'healer_shielder' => 'bennett',
-            ],
-            [
-                'main_dps' => 'navia',
-                'sub_dps' => 'chiori',
-                'support' => 'furina',
                 'healer_shielder' => 'bennett',
             ],
             [
