@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('location', 255)->nullable();
             $table->string('ascensionMaterial', 100)->nullable();
             $table->string('image', 255)->nullable();
+            $table->timestamps();
         });
     }
 

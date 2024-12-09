@@ -61,6 +61,24 @@ class CharacterResource extends Resource
                     ->multiple()
                     ->relationship('artifacts', 'name')
                     ->preload(),
+
+                Forms\Components\FileUpload::make('card')
+                    ->label('Card Image')
+                    ->image()
+                    ->disk('public')
+                    ->directory(fn($record) => $record ? "images/characters/{$record->id}" : null)
+                    ->acceptedFileTypes(['image/png'])
+                    ->imagePreviewHeight('150')
+                    ->visibility('public'),
+                
+                Forms\Components\FileUpload::make('icon_big')
+                    ->label('Icon Image')
+                    ->image()
+                    ->disk('public')
+                    ->directory(fn($record) => $record ? "images/characters/{$record->id}" : null)
+                    ->acceptedFileTypes(['image/png'])
+                    ->imagePreviewHeight('150')
+                    ->visibility('public'),
             ]);
     }
 
@@ -104,7 +122,6 @@ class CharacterResource extends Resource
                     ->label('Artifacts')
                     ->limit(3)
                     ->sortable(),
-
             ])
             ->filters([
                 //

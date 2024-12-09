@@ -53,7 +53,7 @@ class ArtifactSeeder extends Seeder
                                 }
 
                                 // Define la ruta relativa que se guardará en la base de datos
-                                $imagePath = '/storage/images/artifacts/' . $artifactId . '/' . $filename;
+                                $imagePath = '/images/artifacts/' . $artifactId . '/' . $filename;
                             }
                         }
 

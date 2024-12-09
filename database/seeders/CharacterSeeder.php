@@ -51,7 +51,7 @@ class CharacterSeeder extends Seeder
                             $filename = $file->getFilename();
 
                             // Asegurarse de que las rutas usan barras normales
-                            $filePath = '/storage/images/characters/' . $characterId . '/' . str_replace('\\', '/', $filename);
+                            $filePath = '/images/characters/' . $characterId . '/' . str_replace('\\', '/', $filename);
 
                             // Seleccionar la imagen correspondiente según el nombre
                             if ($filename === 'card.png') {
