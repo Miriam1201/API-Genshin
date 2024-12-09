@@ -1,66 +1,115 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Genshin Guide API (Backend)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Descripción del Proyecto
 
-## About Laravel
+El backend de Genshin Guide es una API construida con Laravel 11 para gestionar la información de Genshin Impact. Proporciona datos estructurados sobre personajes, artefactos y equipos, permitiendo integraciones fáciles con el frontend y la aplicación móvil.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Tecnologías Utilizadas
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **Laravel 11**: Framework PHP para gestionar la lógica del servidor y la API.
+- **Filament 3.2**: Para crear un panel de administración intuitivo.
+- **MySQL**: Base de datos para almacenar información estructurada.
+- **WSL (Linux)**: Entorno de desarrollo para Laravel.
+- **XAMPP**: Para gestionar Apache y MySQL en Windows.
+- **Docker**: Usado para contenerizar servicios durante el desarrollo o despliegue.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Funcionalidades Principales
 
-## Learning Laravel
+### API REST
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+1. **Personajes**: Endpoints para consultar información detallada de personajes, incluyendo roles y habilidades.
+2. **Artefactos**: Proporciona información sobre sets de artefactos y sus bonos.
+3. **Equipos**: Gestiona configuraciones de equipos y sus sinergias.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### Base de Datos
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- **Migraciones**: Tablas bien estructuradas para personajes, artefactos y equipos.
+- **Seeders**: Scripts automatizados para poblar la base de datos con datos iniciales desde archivos JSON.
 
-## Laravel Sponsors
+### Tests
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+- **PHPUnit**: Se incluyen pruebas unitarias y de integración para garantizar la estabilidad de la API.
+- **Cobertura de Tests**: Validación de la lógica de personajes, artefactos y equipos.
 
-### Premium Partners
+**Nota**: Los tests pueden fallar en la primera ejecución. Para asegurarse de que todo está correcto, ejecute uno por uno los tests fallidos para identificar posibles problemas:
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+```bash
+php artisan test --filter NombreDelTestFallido
+```
 
-## Contributing
+Para ejecutar todos los tests:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+php artisan test
+```
 
-## Code of Conduct
+## Estructura del Proyecto
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Directorios Principales
 
-## Security Vulnerabilities
+- **`/app/Http/Controllers`**: Controladores de la API que gestionan las solicitudes y respuestas.
+- **`/database/migrations`**: Migraciones de base de datos.
+- **`/database/seeders`**: Seeders para datos iniciales.
+- **`/routes/api.php`**: Definición de las rutas de la API.
+- **`/tests`**: Directorio que contiene las pruebas unitarias y de integración.
+- **`/storage/app/public`** :  Carpeta donde debe colocarse el contenido de la carpeta `datos.example`.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Configuración e Instalación
 
-## License
+### Requisitos Previos
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- **PHP >= 8.2**
+- **Composer**
+- **MySQL**
+- **Node.js** (para construir recursos estáticos)
+- **Docker** (opcional para desarrollo containerizado).
+
+### Pasos
+
+1. Clonar el repositorio:
+   ```bash
+   git clone https://github.com/Miriam1201/API-Genshin.git
+   ```
+2. Instalar dependencias:
+   ```bash
+   composer install
+   npm install
+   ```
+3. Construir recursos estáticos:
+   ```bash
+   npm run build
+   ```
+4. Configurar variables de entorno:
+   Copiar el archivo `.env.example` a `.env` y ajustar los valores necesarios.
+5. Migrar la base de datos:
+   ```bash
+   php artisan migrate --seed
+   ```
+6. Colocar la carpeta `datos.example` en `storage/app/public` y crear el enlace simbólico al almacenamiento:
+   ```bash
+   php artisan storage:link
+   ```
+7. Iniciar el servidor de desarrollo:
+   ```bash
+   php artisan serve
+   ```
+
+## Contribución
+
+Se agradecen contribuciones al proyecto. Para comenzar:
+
+1. Realizar un fork del repositorio.
+2. Crear una rama para tu función o corrección:
+   ```bash
+   git checkout -b feature/nueva-funcion
+   ```
+3. Enviar un pull request.
+
+## Licencia
+
+Este proyecto está licenciado bajo la [Licencia MIT](LICENSE).
+
+---
+
+Gestiona y explora los datos del mundo de Genshin Impact con la API de Genshin Guide.
+
