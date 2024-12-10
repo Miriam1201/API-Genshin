@@ -46,15 +46,15 @@ class WeaponController extends Controller
     {
         $perPage = $request->query('per_page', 10);
         $search = $request->query('search', '');
-
+    
         $query = Weapon::query();
-
+    
         if ($search) {
-            $query->where('name', 'type', "%{$search}%");
+            $query->where('name', 'like', "%{$search}%");
         }
-
+    
         $weapons = $query->paginate($perPage);
-
+    
         return response()->json($weapons, 200);
     }
 }
