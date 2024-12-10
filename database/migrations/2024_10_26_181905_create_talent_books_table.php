@@ -11,15 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('talent_book', function (Blueprint $table) {
-            $table->string('id', 50)->primary();
-            $table->string('type', 50);
-            $table->json('characters');
-            $table->json('availability');
-            $table->string('source', 100);
-            $table->json('items');
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('talent_book')) {
+            Schema::create('talent_book', function (Blueprint $table) {
+                $table->string('id', 50)->primary();
+                $table->string('type', 50);
+                $table->json('characters');
+                $table->json('availability');
+                $table->string('source', 100);
+                $table->json('items');
+                $table->timestamps();
+            });
+        }
     }
 
     /**

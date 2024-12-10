@@ -11,14 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('weapon_experience', function (Blueprint $table) {
-            $table->string('id', 50)->primary();
-            $table->string('name', 50);
-            $table->integer('experience');
-            $table->integer('rarity');
-            $table->json('source');
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('weapon_experience')) {
+            Schema::create('weapon_experience', function (Blueprint $table) {
+                $table->string('id', 50)->primary();
+                $table->string('name', 50);
+                $table->integer('experience');
+                $table->integer('rarity');
+                $table->json('source');
+                $table->timestamps();
+            });
+        }
     }
 
     /**

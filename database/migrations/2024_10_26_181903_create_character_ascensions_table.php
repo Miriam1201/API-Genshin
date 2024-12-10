@@ -11,14 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('character_ascension', function (Blueprint $table) {
-            $table->string('id', 50)->primary();
-            $table->string('type', 50)->nullable();
-            $table->string('name', 50)->nullable();
-            $table->json('sources');
-            $table->integer('rarity')->nullable();
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('character_ascension')) {
+            Schema::create('character_ascension', function (Blueprint $table) {
+                $table->string('id', 50)->primary();
+                $table->string('type', 50)->nullable();
+                $table->string('name', 50)->nullable();
+                $table->json('sources');
+                $table->integer('rarity')->nullable();
+                $table->timestamps();
+            });
+        }
     }
 
     /**

@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -12,10 +11,10 @@ class CharacterSeeder extends Seeder
     /**
      * Run the database seeds.
      */
-
     public function run()
     {
         $baseJsonPath = storage_path('app/public/data/characters');
+        $baseImagePath = storage_path('app/public/images/characters');
 
         $characterDirs = File::directories($baseJsonPath);
 
@@ -31,17 +30,39 @@ class CharacterSeeder extends Seeder
                     // Validar y manejar el cumpleaños inválido o desconocido
                     $birthday = $characterData['birthday'] ?? null;
                     if ($birthday === "Unknown") {
-                        $birthday = null; // Establece cumpleaños como NULL si es "Unknown"
+                        $birthday = null;
                     } elseif (strpos($birthday, '0000') === 0) {
-                        $birthday = '1980' . substr($birthday, 4); // Reemplaza el año '0000' con '1980'
+                        $birthday = '1980' . substr($birthday, 4);
                     }
 
-                    // Verificar si el cumpleaños es inválido y corregirlo
                     if ($birthday === '1980-02-29') {
-                        $birthday = '1980-02-28'; // Cambiar 29 de febrero en un año no bisiesto por 28 de febrero
+                        $birthday = '1980-02-28';
                     }
 
-                    // Inserta los datos del personaje
+                    // Buscar imágenes específicas
+                    $cardImage = null;
+                    $iconBigImage = null;
+
+                    $imageDir = $baseImagePath . DIRECTORY_SEPARATOR . $characterId;
+                    if (File::exists($imageDir)) {
+                        $imageFiles = File::files($imageDir);
+
+                        foreach ($imageFiles as $file) {
+                            $filename = $file->getFilename();
+
+                            // Asegurarse de que las rutas usan barras normales
+                            $filePath = '/images/characters/' . $characterId . '/' . str_replace('\\', '/', $filename);
+
+                            // Seleccionar la imagen correspondiente según el nombre
+                            if ($filename === 'card.png') {
+                                $cardImage = $filePath;
+                            } elseif ($filename === 'icon-big.png') {
+                                $iconBigImage = $filePath;
+                            }
+                        }
+                    }
+
+                    // Insertar los datos del personaje en la base de datos
                     DB::table('characters')->insert([
                         'id' => $characterId,
                         'name' => $characterData['name'],
@@ -56,9 +77,10 @@ class CharacterSeeder extends Seeder
                         'constellation' => $characterData['constellation'] ?? null,
                         'birthday' => $birthday,
                         'description' => $characterData['description'] ?? null,
+                        'card' => $cardImage,
+                        'icon_big' => $iconBigImage,
                     ]);
 
-                    // Inserta los datos de skill talents
                     foreach ($characterData['skillTalents'] as $skillTalent) {
                         $skillTalentId = DB::table('skill_talents')->insertGetId([
                             'character_id' => $characterId,

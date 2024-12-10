@@ -28,6 +28,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('passive_talent');
+        Schema::table('passive_talents', function (Blueprint $table) {
+            $table->dropForeign(['character_id']);
+        });
+
+        Schema::dropIfExists('passive_talents');
     }
 };

@@ -57,6 +57,28 @@ class CharacterResource extends Resource
                     ->label('Birthday'),
                 Forms\Components\Textarea::make('description')
                     ->label('Description'),
+                Forms\Components\Select::make('artifacts')
+                    ->multiple()
+                    ->relationship('artifacts', 'name')
+                    ->preload(),
+
+                Forms\Components\FileUpload::make('card')
+                    ->label('Card Image')
+                    ->image()
+                    ->disk('public')
+                    ->directory(fn($record) => $record ? "images/characters/{$record->id}" : null)
+                    ->acceptedFileTypes(['image/png'])
+                    ->imagePreviewHeight('150')
+                    ->visibility('public'),
+                
+                Forms\Components\FileUpload::make('icon_big')
+                    ->label('Icon Image')
+                    ->image()
+                    ->disk('public')
+                    ->directory(fn($record) => $record ? "images/characters/{$record->id}" : null)
+                    ->acceptedFileTypes(['image/png'])
+                    ->imagePreviewHeight('150')
+                    ->visibility('public'),
             ]);
     }
 
@@ -64,6 +86,10 @@ class CharacterResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('id')
+                    ->label('Character ID')
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('name')
                     ->label('Name')
                     ->sortable()
@@ -92,6 +118,10 @@ class CharacterResource extends Resource
                     ->label('Nation')
                     ->sortable()
                     ->searchable(),
+                Tables\Columns\TextColumn::make('artifacts.name')
+                    ->label('Artifacts')
+                    ->limit(3)
+                    ->sortable(),
             ])
             ->filters([
                 //

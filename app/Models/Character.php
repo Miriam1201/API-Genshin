@@ -26,7 +26,9 @@ class Character extends Model
         'release',
         'constellation',
         'birthday',
-        'description'
+        'description',
+        'card',
+        'icon_big',
     ];
 
     public function skillTalents()
@@ -42,5 +44,30 @@ class Character extends Model
     public function constellations()
     {
         return $this->hasMany(Constellation::class, 'character_id');
+    }
+
+    public function artifacts()
+    {
+        return $this->belongsToMany(Artifact::class, 'artifact_character');
+    }
+
+    public function teamsAsMainDps()
+    {
+        return $this->hasMany(Team::class, 'main_dps');
+    }
+
+    public function teamsAsSubDps()
+    {
+        return $this->hasMany(Team::class, 'sub_dps');
+    }
+
+    public function teamsAsSupport()
+    {
+        return $this->hasMany(Team::class, 'support');
+    }
+
+    public function teamsAsHealerShielder()
+    {
+        return $this->hasMany(Team::class, 'healer_shielder');
     }
 }
