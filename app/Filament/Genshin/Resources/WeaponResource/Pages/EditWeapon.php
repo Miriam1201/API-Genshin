@@ -17,16 +17,15 @@ class EditWeapon extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
-
     protected function mutateFormDataBeforeSave(array $data): array
     {
-        $id = $this->record->name;
+        $id = $this->record->id;
 
         // Define la carpeta destino
         $destinationPath = "images/weapons/{$id}";
 
-        // Mueve la imagen cargada temporalmente a la carpeta correcta si se actualizó
-        if (!empty($data['image']) && $data['image'] !== $this->record->image) {
+        // Mueve las imágenes cargadas temporalmente a la carpeta correcta
+        if (!empty($data['image']) && $data['image'] !== $this->record->icon_big) {
             $filename = 'icon.png';
             Storage::disk('public')->move($data['image'], "{$destinationPath}/{$filename}");
             $data['image'] = "/{$destinationPath}/{$filename}";

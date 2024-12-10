@@ -13,16 +13,16 @@ class CreateWeapon extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $name = $data['name'];
+        $id = $data['id'];
 
         // Define la carpeta destino
-        $destinationPath = "images/weapons/{$name}";
+        $destinationPath = "images/weapons/{$id}";
 
-        // Mueve la imagen cargada temporalmente a la carpeta correcta
-        if (!empty($data['icon'])) {
+        // Mueve las imágenes cargadas temporalmente a la carpeta correcta
+        if (!empty($data['image'])) {
             $filename = 'icon.png';
-            Storage::disk('public')->move($data['icon'], "{$destinationPath}/{$filename}");
-            $data['icon'] = "/{$destinationPath}/{$filename}";
+            Storage::disk('public')->move($data['image'], "{$destinationPath}/{$filename}");
+            $data['image'] = "/{$destinationPath}/{$filename}";
         }
 
         return $data;
