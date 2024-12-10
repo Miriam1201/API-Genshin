@@ -23,6 +23,12 @@ class WeaponResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\TextInput::make('id')
+                    ->label('ID')
+                    ->required()
+                    ->unique(ignorable: fn($record) => $record)
+                    ->maxLength(100)
+                    ->helperText('El ID debe ser único y no puede estar repetido.'),
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(100),
@@ -46,6 +52,14 @@ class WeaponResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('ascensionMaterial')
                     ->maxLength(100),
+                Forms\Components\FileUpload::make('image')
+                    ->label('Weapon Image')
+                    ->image()
+                    ->disk('public')
+                    ->directory(fn($record) => $record ? "images/weapons/{$record->id}" : null)
+                    ->acceptedFileTypes(['image/png'])
+                    ->imagePreviewHeight('150')
+                    ->visibility('public'),
             ]);
     }
 

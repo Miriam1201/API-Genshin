@@ -47,6 +47,17 @@ class ArtifactResource extends Resource
                     ->multiple()
                     ->relationship('characters', 'name')
                     ->preload(),
+
+                Forms\Components\FileUpload::make('image_path')
+                    ->label('Artifact Image')
+                    ->image()
+                    ->disk('public')
+                    ->directory(fn($record) => $record ? "images/artifacts/{$record->id}" : null)
+                    ->acceptedFileTypes(['image/png'])
+                    ->imagePreviewHeight('150')
+                    ->visibility('public'),
+                
+                
             ]);
     }
 
@@ -76,6 +87,12 @@ class ArtifactResource extends Resource
                     ->label('Characters')
                     ->limit(3)
                     ->sortable(),
+
+                Tables\Columns\ImageColumn::make('image_path')
+                    ->label('Image')
+                    ->disk('public')
+                    ->height('50px')
+                    ->width('50px'),
 
             ])
             ->filters([])

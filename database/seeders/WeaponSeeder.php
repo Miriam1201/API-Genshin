@@ -17,7 +17,7 @@ class WeaponSeeder extends Seeder
         // Base de directorios de datos y de imágenes
         $dataPath = storage_path('app/public/data/weapons');
         $imagePath = storage_path('app/public/images/weapons');
-        $baseUrl = '/storage/images/weapons/';
+        $baseUrl = '/images/weapons/';
 
         // Verifica si las carpetas de datos existen
         if (!File::exists($dataPath)) {
