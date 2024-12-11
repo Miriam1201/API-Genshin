@@ -16,11 +16,13 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
 
-        User::factory()->create([
-            'name' => 'admin',
-            'email' => 'admin@example.com',
-            'password' => bcrypt('password'),
-        ]);
+        if (!User::where('email', 'admin@example.com')->exists()) {
+            User::create([
+                'name' => 'admin',
+                'email' => 'admin@example.com',
+                'password' => bcrypt('password'),
+            ]);
+        }
 
         $this->call([
             ArtifactSeeder::class,
