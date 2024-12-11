@@ -24,13 +24,13 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             ArtifactSeeder::class,
-            // BossSeeder::class,
+            BossSeeder::class,
             CharacterSeeder::class,
-            // DomainSeeder::class,
-            // ElementSeeder::class,
-            // EnemySeeder::class,
-            // MaterialSeeder::class,
-            // NationSeeder::class,
+            DomainSeeder::class,
+            ElementSeeder::class,
+            EnemySeeder::class,
+            MaterialSeeder::class,
+            NationSeeder::class,
             WeaponSeeder::class,
             CharacterArtifactSeeder::class,
             TeamSeeder::class
