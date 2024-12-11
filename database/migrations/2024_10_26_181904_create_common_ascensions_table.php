@@ -11,15 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('common_ascension', function (Blueprint $table) {
-            $table->string('id', 50)->primary();
-            $table->string('type', 50);
-            $table->json('characters');
-            $table->json('weapons');
-            $table->json('items');
-            $table->json('sources');
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('common_ascension')) {
+            Schema::create('common_ascension', function (Blueprint $table) {
+                $table->string('id', 50)->primary();
+                $table->string('type', 50);
+                $table->json('characters');
+                $table->json('weapons');
+                $table->json('items');
+                $table->json('sources');
+                $table->timestamps();
+            });
+        }
     }
 
     /**

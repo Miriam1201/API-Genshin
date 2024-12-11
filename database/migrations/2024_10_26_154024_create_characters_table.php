@@ -25,6 +25,8 @@ return new class extends Migration
             $table->string('constellation')->nullable();
             $table->date('birthday')->nullable();
             $table->text('description')->nullable();
+            $table->string('card')->nullable(); 
+            $table->string('icon_big')->nullable();
             $table->timestamps();
         });
     }

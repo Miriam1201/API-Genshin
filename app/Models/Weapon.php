@@ -28,5 +28,6 @@ class Weapon extends Model
         'passiveDesc',
         'location',
         'ascensionMaterial',
+        'image'
     ];
 }

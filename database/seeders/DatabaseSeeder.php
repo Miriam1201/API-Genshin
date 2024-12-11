@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Team;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 
@@ -22,16 +24,16 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             ArtifactSeeder::class,
-            BossSeeder::class,
+            // BossSeeder::class,
             CharacterSeeder::class,
-            ConsumableSeeder::class,
-            PotionSeeder::class,
-            DomainSeeder::class,
-            ElementSeeder::class,
-            EnemySeeder::class,
-            MaterialSeeder::class,
-            NationSeeder::class,
+            // DomainSeeder::class,
+            // ElementSeeder::class,
+            // EnemySeeder::class,
+            // MaterialSeeder::class,
+            // NationSeeder::class,
             WeaponSeeder::class,
+            CharacterArtifactSeeder::class,
+            TeamSeeder::class
         ]);
     }
 }
