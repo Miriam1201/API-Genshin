@@ -81,15 +81,19 @@ php artisan test
    ```
 4. Configurar variables de entorno:
    Copiar el archivo `.env.example` a `.env` y ajustar los valores necesarios.
-5. Migrar la base de datos:
+5. Copiar los datos example al storage:
+   ```bash
+    cp -r datos.example/* storage/app/public/
+   ```
+6. Migrar la base de datos:
    ```bash
    php artisan migrate --seed
    ```
-6. Colocar la carpeta `datos.example` en `storage/app/public` y crear el enlace simbólico al almacenamiento:
+7. Colocar la carpeta `datos.example` en `storage/app/public` y crear el enlace simbólico al almacenamiento:
    ```bash
    php artisan storage:link
    ```
-7. Iniciar el servidor de desarrollo:
+8. Iniciar el servidor de desarrollo:
    ```bash
    php artisan serve
    ```
