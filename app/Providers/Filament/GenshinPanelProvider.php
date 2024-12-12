@@ -33,6 +33,7 @@ class GenshinPanelProvider extends PanelProvider
             ->pages([
                 Pages\Dashboard::class,
             ])
+            ->login()
             ->discoverWidgets(in: app_path('Filament/Genshin/Widgets'), for: 'App\\Filament\\Genshin\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
@@ -51,8 +52,8 @@ class GenshinPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ])
+            ]);
 
-            ->middleware(['auth', 'verified']);
+        // ->middleware(['auth', 'verified']);
     }
 }
