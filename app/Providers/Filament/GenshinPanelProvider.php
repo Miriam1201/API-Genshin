@@ -51,8 +51,6 @@ class GenshinPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ])
-
-            ->middleware(['auth', 'verified']);
+            ]);
     }
 }

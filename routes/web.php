@@ -19,18 +19,3 @@ use Illuminate\Support\Facades\Auth;
 Route::get('/', function () {
     return view('welcome');
 });
-
-// Rutas de autenticación para login y logout
-Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
-Route::post('login', [LoginController::class, 'login']);
-Route::post('logout', [LoginController::class, 'logout'])->name('logout');
-
-// Ruta a la página principal del usuario autenticado
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-// Rutas de autenticación estándar proporcionadas por Laravel
-Auth::routes();
-
-// La ruta al panel de administración de Filament se genera automáticamente.
-// Normalmente, puedes acceder a ella en:
-// http://localhost/admin o http://127.0.0.1:8000/admin
