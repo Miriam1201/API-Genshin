@@ -33,4 +33,4 @@ Auth::routes();
 
 // La ruta al panel de administración de Filament se genera automáticamente.
 // Normalmente, puedes acceder a ella en:
-// http://localhost/admin o http://127.0.0.1:8000/admin
+// http://127.0.0.1:8000/genshin
