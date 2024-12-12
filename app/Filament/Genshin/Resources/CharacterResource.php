@@ -28,7 +28,7 @@ class CharacterResource extends Resource
                 Forms\Components\TextInput::make('id')
                     ->label('Character ID')
                     ->required()
-                    ->unique()
+                    ->unique(ignorable: fn($record) => $record)
                     ->disabled(fn(?Character $record) => $record !== null),
                 Forms\Components\TextInput::make('name')
                     ->label('Name')
@@ -70,7 +70,7 @@ class CharacterResource extends Resource
                     ->acceptedFileTypes(['image/png'])
                     ->imagePreviewHeight('150')
                     ->visibility('public'),
-                
+
                 Forms\Components\FileUpload::make('icon_big')
                     ->label('Icon Image')
                     ->image()
